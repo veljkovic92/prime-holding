@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0 10px 0;
+  margin-bottom: 50px;
+
+  &--link {
+    text-decoration: none;
+    color: inherit;
+
+    &__active {
+      text-decoration: underline;
+      text-decoration-thickness: 5px;
+      text-decoration-skip-ink: none;
+    }
+  }
+}

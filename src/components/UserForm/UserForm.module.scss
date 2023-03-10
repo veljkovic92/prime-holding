@@ -1,0 +1,11 @@
+.form {
+  input:placeholder-shown {
+    font-style: italic;
+  }
+
+  &--error {
+    font-style: italic;
+    color: red;
+    font-size: 0.75rem;
+  }
+}
