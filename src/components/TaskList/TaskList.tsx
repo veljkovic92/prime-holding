@@ -4,47 +4,16 @@ import { Employee, Task } from "../../types/types";
 import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
-const TaskList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const params = useParams();
+interface ITaskList {
+  taskList: Task[];
+  onDeleteEmployeeHandler: (id: string) => void;
+}
 
-  const dbRef = ref(getDatabase());
-  const db = getDatabase();
-
-  useEffect(() => {
-    get(child(dbRef, "employees/" + params.employeeId + "/tasks/"))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let tasks = snapshot.val();
-          const tasksMap = Object.keys(tasks).map(
-            (item) => tasks[item]
-          );
-          setTasks(tasksMap);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [tasks]);
-
-  const onDeleteEmployeeHandler = (id: string) => {
-    remove(ref(db, "employees/" + params.employeeId + "/tasks/" + id))
-      .then(() => {
-        // Data saved successfully!
-        const updatedEmployees = tasks.filter((task) => task.id !== id);
-        setTasks(updatedEmployees);
-      })
-      .catch((error) => {
-        // The write failed...
-      });
-  };
-
+const TaskList = ({ taskList, onDeleteEmployeeHandler }: ITaskList) => {
   return (
     <div>
       <ul>
-        {tasks.map((task) => (
+        {taskList.map((task) => (
           <li key={task.id}>
             <div>
               <p>{task.title}</p>

@@ -8,52 +8,14 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router";
 import { Employee, Task } from "../../types/types";
 
-const TaskForm = () => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const db = getDatabase(app);
-  const dbRef = ref(getDatabase());
-  const [matchingTasks, setMatchingTasks] = useState<Task[]>([]);
+interface ITaskForm {
+  onRegisterFormSubmit: (data: Task) => void;
+}
 
-  const getData = () => {
-    get(child(dbRef, `employees/${params.employeeId}/tasks`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let tasks = snapshot.val();
-          const tasksMap = Object.keys(tasks).map((item) => tasks[item]);
-          setMatchingTasks(tasksMap);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const onRegisterFormSubmit = async (data: Task) => {
-    const { title, description, assignee, date } = data;
-    const id = uuidv4();
-
-    set(ref(db, "employees/" + params.employeeId + "/tasks/" + id), {
-      id,
-      title,
-      description,
-      assignee,
-      date,
-    })
-      .then((res) => {
-        console.log(res);
-
-        getData();
-      })
-      .catch((err) => {});
-  };
-
+const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
   const {
     register,
     handleSubmit,
-    watch,
 
     formState: { errors, isDirty, isValid },
   } = useForm<Task>({ mode: "all" });
