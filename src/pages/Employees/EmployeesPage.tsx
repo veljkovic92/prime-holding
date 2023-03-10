@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { Employee } from "../../types/types";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const EmployeesPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -27,11 +28,16 @@ const EmployeesPage = () => {
       });
   }, []);
 
+  
+  
+
   const onDeleteEmployeeHandler = (id: string) => {
     remove(ref(db, "employees/" + id))
       .then(() => {
         // Data saved successfully!
-        const updatedEmployees = employees.filter(employee => employee.id !== id)
+        const updatedEmployees = employees.filter(
+          (employee) => employee.id !== id
+        );
         setEmployees(updatedEmployees);
       })
       .catch((error) => {
@@ -52,6 +58,10 @@ const EmployeesPage = () => {
             <Button onClick={() => onDeleteEmployeeHandler(employee.id)}>
               Delete
             </Button>
+            <Link to={`${employee.id}/form`}>
+              <Button>Update</Button>
+            </Link>
+            <Button>Tasks</Button>
           </li>
         ))}
       </ul>

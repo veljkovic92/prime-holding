@@ -7,6 +7,8 @@ export type Employee = {
   monthlySalary?: number;
 };
 
+export type UpdateEmployee = Omit<Employee, 'id'>
+
 export type Task = {
   title: string;
   description: string;
