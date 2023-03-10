@@ -61,7 +61,10 @@ const EmployeesPage = () => {
             <Link to={`${employee.id}/form`}>
               <Button>Update</Button>
             </Link>
+            <Link to={`${employee.id}/tasks`}>
             <Button>Tasks</Button>
+            </Link>
+            
           </li>
         ))}
       </ul>

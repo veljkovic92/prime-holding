@@ -7,6 +7,7 @@ import HomePage from "./pages/Home/HomePage";
 import StatisticsPage from "./pages/Statistics/StatisticsPage";
 import EmployeesPage from "./pages/Employees/EmployeesPage";
 import UpdateUserPage from "./pages/UpdateUser/UpdateUserPage";
+import TasksPage from "./pages/Tasks/TasksPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             path="employees/:employeeId/form"
             element={<UpdateUserPage />}
           />
+          <Route path="employees/:employeeId/tasks" element={<TasksPage />} />
           <Route path="stats" element={<StatisticsPage />} />
         </Routes>
       </Layout>

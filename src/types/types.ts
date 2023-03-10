@@ -10,6 +10,7 @@ export type Employee = {
 export type UpdateEmployee = Omit<Employee, 'id'>
 
 export type Task = {
+  id: string;
   title: string;
   description: string;
   assignee: string;
