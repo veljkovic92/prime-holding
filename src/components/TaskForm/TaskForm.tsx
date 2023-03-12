@@ -67,6 +67,14 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
           {...register("date", { required: false })}
         />
       </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Label>Completed</Form.Label>
+        <Form.Check
+          type="switch"
+          label="Completed?"
+          {...register("completed", { required: false })}
+        />
+      </Form.Group>
       <div className={classes["form__actions"]}>
         <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
           Create

@@ -40,7 +40,7 @@ const EmployeeItem = ({ employee, onDeleteEmployeeHandler }: IEmployee) => {
         </Link>
         <div className={classes["employeeItem__actions__additional"]}>
         <Link to={`${employee.id}/form`} className={classes["employeeItem__actions__updateBtn"]} >
-          <Button variant="success"><FiEdit /></Button>
+          <Button variant="warning"><FiEdit /></Button>
         </Link>
         <Button onClick={() => onDeleteEmployeeHandler(employee.id)} className={classes["employeeItem__actions__deleteBtn"]} variant="danger">
           <AiOutlineDelete />

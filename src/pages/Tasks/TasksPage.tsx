@@ -54,7 +54,7 @@ const TasksPage = () => {
   };
 
   const onRegisterFormSubmit = async (data: Task) => {
-    const { title, description, date } = data;
+    const { title, description, date, completed } = data;
     const id = uuidv4();
 
     await set(ref(db, "employees/" + params.employeeId + "/tasks/" + id), {
@@ -62,14 +62,37 @@ const TasksPage = () => {
       title,
       description,
       date,
+      completed,
     });
 
     getData();
     setNewTaskClicked(false);
   };
 
-  const onDeleteEmployeeHandler = async (id: string) => {
+  const onDeleteTaskHandler = async (id: string) => {
     await remove(ref(db, "employees/" + params.employeeId + "/tasks/" + id));
+    getData();
+  };
+
+  const onDoneTaskHandler = async (id: string) => {
+    await set(
+      ref(
+        db,
+        "employees/" + params.employeeId + "/tasks/" + id + "/completed/"
+      ),
+      true
+    );
+    getData();
+  };
+
+  const onNotDoneTaskHandler = async (id: string) => {
+    await set(
+      ref(
+        db,
+        "employees/" + params.employeeId + "/tasks/" + id + "/completed/"
+      ),
+      false
+    );
     getData();
   };
 
@@ -81,7 +104,10 @@ const TasksPage = () => {
         </em>
         's tasks
       </h2>
-      <Button onClick={() => setNewTaskClicked((prevValue) => !prevValue)} className={classes["tasksPage__newTaskBtn"]}>
+      <Button
+        onClick={() => setNewTaskClicked((prevValue) => !prevValue)}
+        className={classes["tasksPage__newTaskBtn"]}
+      >
         New Task
       </Button>
       {newTaskClicked && (
@@ -89,7 +115,9 @@ const TasksPage = () => {
       )}
       <TaskList
         taskList={taskList}
-        onDeleteEmployeeHandler={onDeleteEmployeeHandler}
+        onDeleteTaskHandler={onDeleteTaskHandler}
+        onDoneTaskHandler={onDoneTaskHandler}
+        onNotDoneTaskHandler={onNotDoneTaskHandler}
       />
     </div>
   );

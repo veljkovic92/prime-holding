@@ -6,6 +6,7 @@ export type Employee = {
   dateOfBirth?: string;
   monthlySalary?: number;
   tasks?: Task[];
+  
 };
 
 export type UpdateEmployee = Omit<Employee, "id">;
@@ -15,6 +16,7 @@ export type Task = {
   title: string;
   description: string;
   date: Date;
+  completed: boolean;
 };
 
 export type LayoutProps = {

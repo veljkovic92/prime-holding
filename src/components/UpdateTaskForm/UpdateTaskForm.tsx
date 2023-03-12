@@ -24,8 +24,8 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
         id: data.id || matchingTask?.id || "",
         title: data.title || matchingTask?.title || "",
         description: data.description || matchingTask?.description || "",
-
         date: data.date || matchingTask?.date || "",
+        completed: data.completed ?? matchingTask?.completed ?? false,
       };
 
       const updates: Task = updateData;
@@ -96,6 +96,15 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
           type="date"
           placeholder="Add date"
           {...register("date", { required: false })}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Label>Completed</Form.Label>
+        <Form.Check
+          type="switch"
+          label="Completed?"
+          {...register("completed", { required: false })}
+          checked={watch("completed")}
         />
       </Form.Group>
       <div className={classes["form__actions"]}>

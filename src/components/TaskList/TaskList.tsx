@@ -8,10 +8,17 @@ import classes from "./TaskList.module.scss";
 
 interface ITaskList {
   taskList: Task[];
-  onDeleteEmployeeHandler: (id: string) => void;
+  onDeleteTaskHandler: (id: string) => void;
+  onDoneTaskHandler: (id: string) => void;
+  onNotDoneTaskHandler: (id: string) => void;
 }
 
-const TaskList = ({ taskList, onDeleteEmployeeHandler }: ITaskList) => {
+const TaskList = ({
+  taskList,
+  onDeleteTaskHandler,
+  onDoneTaskHandler,
+  onNotDoneTaskHandler,
+}: ITaskList) => {
   return (
     <div className={classes.taskList}>
       {taskList.length === 0 && <h3>No Tasks Yet...</h3>}
@@ -22,7 +29,9 @@ const TaskList = ({ taskList, onDeleteEmployeeHandler }: ITaskList) => {
             {taskList.map((task) => (
               <TaskItem
                 task={task}
-                onDeleteEmployeeHandler={onDeleteEmployeeHandler}
+                onDeleteTaskHandler={onDeleteTaskHandler}
+                onDoneTaskHandler={onDoneTaskHandler}
+                onNotDoneTaskHandler={onNotDoneTaskHandler}
               />
             ))}
           </ul>
