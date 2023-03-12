@@ -31,7 +31,6 @@ const TasksPage = () => {
           setTaskList(tasksMap);
         } else {
           setTaskList([]);
-          console.log("No data available");
         }
       })
       .catch((error) => {
@@ -45,7 +44,6 @@ const TasksPage = () => {
 
           setMatchingEmployee(employee);
         } else {
-          console.log("No data available");
         }
       })
       .catch((error) => {

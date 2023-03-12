@@ -49,7 +49,12 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
     watch,
     reset,
     formState: { errors, isDirty, isValid },
-  } = useForm<Task>({ mode: "all" });
+  } = useForm<Task>({
+    mode: "all",
+    defaultValues: {
+      completed: matchingTask?.completed || false,
+    },
+  });
   const onSubmit: SubmitHandler<Task> = (data) => onRegisterFormSubmit(data);
 
   return (

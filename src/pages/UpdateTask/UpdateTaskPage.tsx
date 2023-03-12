@@ -23,7 +23,6 @@ const UpdateTaskPage = () => {
 
           setMatchingEmployee(matchingEmployee);
         } else {
-          console.log("No data available");
         }
       })
       .catch((error) => {
@@ -41,7 +40,6 @@ const UpdateTaskPage = () => {
 
           // onMatchingTaskTitle(matchingTask.title);
         } else {
-          console.log("No data available");
         }
       })
       .catch((error) => {
@@ -61,9 +59,11 @@ const UpdateTaskPage = () => {
     <div className={classes.updateTaskPage}>
       <h2 className={classes["updateTaskPage__title"]}>Edit Task</h2>
       <h4 className={classes["updateTaskPage__name"]}>
-        <em>{matchingEmployee?.name}'s 
-        <strong> {matchingTask?.title} </strong>
-         task</em>
+        <em>
+          {matchingEmployee?.name}'s
+          <strong> {matchingTask?.title} </strong>
+          task
+        </em>
       </h4>
       <UpdateTaskForm matchingTask={matchingTask} />
     </div>

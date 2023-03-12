@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import UpdateEmployeeForm from "../../components/UpdateEmployeeForm/UpdateEmployeeForm";
 import { Employee } from "../../types/types";
-import classes from "./UpdateEmployeePage.module.scss"
+import classes from "./UpdateEmployeePage.module.scss";
 
 const UpdateUserPage = () => {
   const params = useParams();
@@ -20,7 +20,6 @@ const UpdateUserPage = () => {
 
           setMatchingEmployee(employee);
         } else {
-          console.log("No data available");
         }
       })
       .catch((error) => {
@@ -30,7 +29,9 @@ const UpdateUserPage = () => {
 
   return (
     <div className={classes.updateEmployee}>
-      <h2 className={classes["updateEmployee__title"]}>Edit {matchingEmployee?.name}'s profile</h2>
+      <h2 className={classes["updateEmployee__title"]}>
+        Edit {matchingEmployee?.name}'s profile
+      </h2>
       <UpdateEmployeeForm matchingEmployee={matchingEmployee} />
     </div>
   );

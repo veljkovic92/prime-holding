@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { Employee } from "../../types/types";
-import classes from "./EmployeesPage.module.scss"
+import classes from "./EmployeesPage.module.scss";
 import EmployeeItem from "../../components/EmployeeItem/EmployeeItem";
 
 const EmployeesPage = () => {
@@ -20,16 +20,12 @@ const EmployeesPage = () => {
           );
           setEmployees(employeesMap);
         } else {
-          console.log("No data available");
         }
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
-  
-  
 
   const onDeleteEmployeeHandler = (id: string) => {
     remove(ref(db, "employees/" + id))
@@ -49,7 +45,10 @@ const EmployeesPage = () => {
     <div className={classes["employees"]}>
       <ul className={classes["employees__list"]}>
         {employees.map((employee) => (
-          <EmployeeItem employee={employee} onDeleteEmployeeHandler={onDeleteEmployeeHandler}/>
+          <EmployeeItem
+            employee={employee}
+            onDeleteEmployeeHandler={onDeleteEmployeeHandler}
+          />
         ))}
       </ul>
     </div>
