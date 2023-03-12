@@ -3,6 +3,8 @@ import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { Employee, Task } from "../../types/types";
 import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import TaskItem from "../TaskItem/TaskItem";
+import classes from "./TaskList.module.scss"
 
 interface ITaskList {
   taskList: Task[];
@@ -11,26 +13,11 @@ interface ITaskList {
 
 const TaskList = ({ taskList, onDeleteEmployeeHandler }: ITaskList) => {
   return (
-    <div>
+    <div className={classes.taskList}>
+      <h3>All Employee Tasks</h3>
       <ul>
         {taskList.map((task) => (
-          <li key={task.id}>
-            <div>
-              <p>{task.title}</p>
-              <p>{task.description}</p>
-
-              <p>{task.date.toLocaleString()}</p>
-              <Button onClick={() => onDeleteEmployeeHandler(task.id)}>
-                Delete
-              </Button>
-              <Link to={`${task.id}/form`}>
-                <Button>Update</Button>
-              </Link>
-              <Link to={`${task.id}/tasks`}>
-                <Button>Tasks</Button>
-              </Link>
-            </div>
-          </li>
+          <TaskItem task={task} onDeleteEmployeeHandler={onDeleteEmployeeHandler}/>
         ))}
       </ul>
     </div>

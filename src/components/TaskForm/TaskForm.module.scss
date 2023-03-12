@@ -1,4 +1,5 @@
 .form {
+  margin-bottom: 50px;
   input:placeholder-shown {
     font-style: italic;
   }
@@ -7,5 +8,11 @@
     font-style: italic;
     color: red;
     font-size: 0.75rem;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

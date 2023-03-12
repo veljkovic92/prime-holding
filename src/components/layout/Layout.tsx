@@ -2,10 +2,9 @@ import classes from "./Layout.module.scss"
 import Body from "./Body/Body";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import { LayoutProps } from "../../types/types";
 
-type LayoutProps = {
-  children?: React.ReactNode;
-};
+
 
 const Layout = ({ children }: LayoutProps) => {
   return (

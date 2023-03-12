@@ -16,3 +16,7 @@ export type Task = {
   description: string;
   date: Date;
 };
+
+export type LayoutProps = {
+  children?: React.ReactNode;
+};

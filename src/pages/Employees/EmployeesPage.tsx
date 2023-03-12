@@ -3,6 +3,9 @@ import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { Employee } from "../../types/types";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import classes from "./EmployeesPage.module.scss"
+import Card from "../../components/ui/Card/Card";
+import EmployeeItem from "../../components/EmployeeItem/EmployeeItem";
 
 const EmployeesPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -46,26 +49,10 @@ const EmployeesPage = () => {
   };
 
   return (
-    <div>
-      <ul>
+    <div className={classes["employees"]}>
+      <ul className={classes["employees__list"]}>
         {employees.map((employee) => (
-          <li key={employee.id}>
-            {employee.name}
-            {employee.email}
-            {employee.phoneNumber}
-            {employee.dateOfBirth}
-            {employee.monthlySalary}
-            <Button onClick={() => onDeleteEmployeeHandler(employee.id)}>
-              Delete
-            </Button>
-            <Link to={`${employee.id}/form`}>
-              <Button>Update</Button>
-            </Link>
-            <Link to={`${employee.id}/tasks`}>
-            <Button>Tasks</Button>
-            </Link>
-            
-          </li>
+          <EmployeeItem employee={employee} onDeleteEmployeeHandler={onDeleteEmployeeHandler}/>
         ))}
       </ul>
     </div>

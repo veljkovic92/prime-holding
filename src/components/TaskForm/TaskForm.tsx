@@ -67,10 +67,11 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
           {...register("date", { required: false })}
         />
       </Form.Group>
-
-      <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
-        Submit
-      </Button>
+      <div className={classes["form__actions"]}>
+        <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
+          Create
+        </Button>
+      </div>
     </Form>
   );
 };

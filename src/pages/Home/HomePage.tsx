@@ -5,7 +5,7 @@ import classes from "./HomePage.module.scss"
 const HomePage = () => {
   return (
     <div className={classes["home-page"]}>
-      <h2>Add New User</h2>
+      <h2>Add New Employee</h2>
       <UserForm />
     </div>
   );

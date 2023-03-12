@@ -17,7 +17,6 @@ const UserForm = () => {
     const { name, email, phoneNumber, dateOfBirth, monthlySalary } = data;
     const id = uuidv4();
 
-
     set(ref(db, "employees/" + id), {
       id,
       name,
@@ -43,7 +42,7 @@ const UserForm = () => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <Form.Group className="mb-3" controlId="formBasicName">
-        <Form.Label>Your Full Name</Form.Label>
+        <Form.Label>Full Name</Form.Label>
         <Form.Control
           type="text"
           placeholder="Full name"
@@ -114,10 +113,16 @@ const UserForm = () => {
           {...register("monthlySalary", { required: false })}
         />
       </Form.Group>
-
-      <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
-        Submit
-      </Button>
+      <div  className={classes["form__actions"]}>
+        <Button
+          
+          variant="primary"
+          type="submit"
+          disabled={!isDirty || !isValid}
+        >
+          Submit
+        </Button>
+      </div>
     </Form>
   );
 };

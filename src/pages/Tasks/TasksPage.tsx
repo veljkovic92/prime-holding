@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { child, get, getDatabase, ref, remove, set } from "firebase/database";
 import { useParams } from "react-router";
 import app from "../../firebase/firebase";
+import classes from "./TasksPage.module.scss";
 
 const TasksPage = () => {
   const params = useParams();
@@ -70,9 +71,11 @@ const TasksPage = () => {
   };
 
   return (
-    <div>
+    <div className={classes.tasksPage}>
       <h2>Tasks</h2>
-      <h5>Employee Name: {matchingEmployee?.name}</h5>
+      <h5>
+        Employee: <em>{matchingEmployee?.name}</em>
+      </h5>
       <TaskForm onRegisterFormSubmit={onRegisterFormSubmit} />
       <TaskList
         taskList={taskList}
