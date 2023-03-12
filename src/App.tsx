@@ -8,6 +8,8 @@ import StatisticsPage from "./pages/Statistics/StatisticsPage";
 import EmployeesPage from "./pages/Employees/EmployeesPage";
 import UpdateUserPage from "./pages/UpdateUser/UpdateUserPage";
 import TasksPage from "./pages/Tasks/TasksPage";
+import UpdateTaskForm from "./components/UpdateTaskForm/UpdateTaskForm";
+import UpdateTaskPage from "./pages/UpdateTask/UpdateTaskPage";
 
 function App() {
   return (
@@ -21,6 +23,10 @@ function App() {
             element={<UpdateUserPage />}
           />
           <Route path="employees/:employeeId/tasks" element={<TasksPage />} />
+          <Route
+            path="employees/:employeeId/tasks/:taskId/form"
+            element={<UpdateTaskPage />}
+          />
           <Route path="stats" element={<StatisticsPage />} />
         </Routes>
       </Layout>

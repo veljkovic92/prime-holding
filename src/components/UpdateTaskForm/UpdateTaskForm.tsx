@@ -1,22 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
-import classes from "./TaskForm.module.scss";
-import { child, get, getDatabase, ref, set } from "firebase/database";
+import classes from "./UpdateTaskForm.module.scss";
+import { getDatabase, get, ref, child, push, update } from "firebase/database";
 import app from "../../firebase/firebase";
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router";
-import { Employee, Task } from "../../types/types";
+import { Task } from "../../types/types";
 
-interface ITaskForm {
-  onRegisterFormSubmit: (data: Task) => void;
-}
+type UpdateTaskFormProps = {
+  onMatchingTaskTitle: (title: string) => void;
+  matchingTask: Task | undefined;
+};
 
-const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
+const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
+  const params = useParams();
+  const employeeId = params.employeeId;
+  const taskId = params.taskId;
+  const navigate = useNavigate();
+  const db = getDatabase(app);
+
+  const onRegisterFormSubmit = async (data: Task) => {
+    try {
+      const updateData: Task = {
+        id: data.id || matchingTask?.id || "",
+        title: data.title || matchingTask?.title || "",
+        description: data.description || matchingTask?.description || "",
+
+        date: data.date || matchingTask?.date || "",
+      };
+
+      const updates: Task = updateData;
+
+      await update(
+        ref(db, "employees/" + employeeId + "/tasks/" + taskId),
+        updates
+      );
+
+      navigate("/employees/" + employeeId + "/tasks/");
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    reset(matchingTask);
+  }, [matchingTask]);
+
   const {
     register,
     handleSubmit,
-
+    watch,
+    reset,
     formState: { errors, isDirty, isValid },
   } = useForm<Task>({ mode: "all" });
   const onSubmit: SubmitHandler<Task> = (data) => onRegisterFormSubmit(data);
@@ -24,11 +56,11 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <Form.Group className="mb-3" controlId="formBasicName">
-        <Form.Label>Your Task Name</Form.Label>
+        <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Task name"
-          {...register("title", { required: true, minLength: 3 })}
+          placeholder="Full name"
+          {...register("title", { required: false, minLength: 3 })}
         />
         {errors.title && errors.title.type === "minLength" && (
           <p className={classes["form--error"]}>
@@ -40,17 +72,17 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
         )}
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Task Description</Form.Label>
+        <Form.Label>Description</Form.Label>
         <Form.Control
           type="text"
           placeholder="Enter description"
           {...register("description", {
-            required: true,
+            required: false,
           })}
         />
 
         {errors.description && errors.description.type === "required" && (
-          <p className={classes["form--error"]}>Email is required</p>
+          <p className={classes["form--error"]}>description is required</p>
         )}
         {errors.description && errors.description.type === "pattern" && (
           <p className={classes["form--error"]}>
@@ -75,4 +107,4 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
   );
 };
 
-export default TaskForm;
+export default UpdateTaskForm;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TaskForm from "../../components/TaskForm/TaskForm";
 import TaskList from "../../components/TaskList/TaskList";
-import { Task } from "../../types/types";
+import { Employee, Task } from "../../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { child, get, getDatabase, ref, remove, set } from "firebase/database";
 import { useParams } from "react-router";
@@ -12,6 +12,7 @@ const TasksPage = () => {
   const db = getDatabase(app);
   const dbRef = ref(getDatabase());
   const [taskList, setTaskList] = useState<Task[]>([]);
+  const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
 
   useEffect(() => {
     getData();
@@ -21,10 +22,25 @@ const TasksPage = () => {
     get(child(dbRef, `employees/${params.employeeId}/tasks`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          let tasks = snapshot.val();
+          const tasks = snapshot.val();
           const tasksMap = Object.keys(tasks).map((item) => tasks[item]);
 
           setTaskList(tasksMap);
+        } else {
+          setTaskList([]);
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    get(child(dbRef, `employees/${params.employeeId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const employee = snapshot.val();
+
+          setMatchingEmployee(employee);
         } else {
           console.log("No data available");
         }
@@ -35,14 +51,13 @@ const TasksPage = () => {
   };
 
   const onRegisterFormSubmit = async (data: Task) => {
-    const { title, description, assignee, date } = data;
+    const { title, description, date } = data;
     const id = uuidv4();
 
     await set(ref(db, "employees/" + params.employeeId + "/tasks/" + id), {
       id,
       title,
       description,
-      assignee,
       date,
     });
 
@@ -56,6 +71,8 @@ const TasksPage = () => {
 
   return (
     <div>
+      <h2>Tasks</h2>
+      <h5>Employee Name: {matchingEmployee?.name}</h5>
       <TaskForm onRegisterFormSubmit={onRegisterFormSubmit} />
       <TaskList
         taskList={taskList}

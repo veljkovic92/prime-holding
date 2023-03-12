@@ -18,7 +18,7 @@ const TaskList = ({ taskList, onDeleteEmployeeHandler }: ITaskList) => {
             <div>
               <p>{task.title}</p>
               <p>{task.description}</p>
-              <p>{task.assignee}</p>
+
               <p>{task.date.toLocaleString()}</p>
               <Button onClick={() => onDeleteEmployeeHandler(task.id)}>
                 Delete

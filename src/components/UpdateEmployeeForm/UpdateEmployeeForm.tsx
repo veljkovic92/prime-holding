@@ -4,34 +4,18 @@ import { Button, Form } from "react-bootstrap";
 import classes from "./UpdateEmployeeForm.module.scss";
 import { getDatabase, get, ref, child, push, update } from "firebase/database";
 import app from "../../firebase/firebase";
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router";
 import { Employee, UpdateEmployee } from "../../types/types";
 
-const UpdateUserForm = () => {
+interface IUpdateUserForm {
+  matchingEmployee: Employee | undefined;
+}
+
+const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
   const params = useParams();
   const employeeId = params.employeeId;
   const navigate = useNavigate();
-  const dbRef = ref(getDatabase());
   const db = getDatabase(app);
-
-  const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
-
-  useEffect(() => {
-    get(child(dbRef, `employees/${employeeId}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let employee = snapshot.val();
-
-          setMatchingEmployee(employee);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   const onRegisterFormSubmit = async (data: Employee) => {
     try {
@@ -51,13 +35,19 @@ const UpdateUserForm = () => {
     } catch (err) {}
   };
 
+  useEffect(() => {
+    reset(matchingEmployee);
+  }, [matchingEmployee]);
+
   const {
     register,
     handleSubmit,
-    watch,
-
+    reset,
     formState: { errors, isDirty, isValid },
-  } = useForm<Employee>({ mode: "all" });
+  } = useForm<Employee>({
+    mode: "all",
+  });
+
   const onSubmit: SubmitHandler<Employee> = (data) =>
     onRegisterFormSubmit(data);
 

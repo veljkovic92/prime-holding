@@ -5,14 +5,14 @@ export type Employee = {
   phoneNumber?: number;
   dateOfBirth?: string;
   monthlySalary?: number;
+  tasks?: Task[];
 };
 
-export type UpdateEmployee = Omit<Employee, 'id'>
+export type UpdateEmployee = Omit<Employee, "id">;
 
 export type Task = {
   id: string;
   title: string;
   description: string;
-  assignee: string;
   date: Date;
-}
+};
