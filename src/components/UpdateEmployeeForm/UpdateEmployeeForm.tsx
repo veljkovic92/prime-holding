@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import classes from "./UpdateEmployeeForm.module.scss";
-import { getDatabase, get, ref, child, push, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import app from "../../firebase/firebase";
 import { useNavigate, useParams } from "react-router";
 import { Employee, UpdateEmployee } from "../../types/types";

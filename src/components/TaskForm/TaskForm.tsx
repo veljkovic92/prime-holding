@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import classes from "./TaskForm.module.scss";
-import { child, get, getDatabase, ref, set } from "firebase/database";
-import app from "../../firebase/firebase";
-import { v4 as uuidv4 } from "uuid";
-import { useNavigate, useParams } from "react-router";
-import { Employee, Task } from "../../types/types";
+import { Task } from "../../types/types";
 
 interface ITaskForm {
   onRegisterFormSubmit: (data: Task) => void;

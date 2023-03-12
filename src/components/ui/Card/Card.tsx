@@ -1,4 +1,3 @@
-import React from 'react'
 import { LayoutProps } from '../../../types/types'
 import classes from "./Card.module.scss"
 

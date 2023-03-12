@@ -1,5 +1,5 @@
 import { child, get, getDatabase, ref } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Employee, Task } from "../../types/types";
 
 const StatisticsPage = () => {
@@ -10,6 +10,8 @@ const StatisticsPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
 
   const [busiestEmployee, setBusiestEmployee] = useState<Employee>();
+
+  const [topFiveEmployees, setTopFiveEmployees] = useState<Employee[]>([]);
 
   const getTaskData = () => {
     get(child(dbRef, `employees`))

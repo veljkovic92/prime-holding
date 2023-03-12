@@ -1,5 +1,5 @@
 import { child, get, getDatabase, ref } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import UpdateTaskForm from "../../components/UpdateTaskForm/UpdateTaskForm";
 import { Employee, Task } from "../../types/types";

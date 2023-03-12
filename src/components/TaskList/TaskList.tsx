@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getDatabase, ref, child, get, remove } from "firebase/database";
-import { Employee, Task } from "../../types/types";
-import { Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Task } from "../../types/types";
 import TaskItem from "../TaskItem/TaskItem";
 import classes from "./TaskList.module.scss";
 

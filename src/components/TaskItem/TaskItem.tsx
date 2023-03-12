@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "react-bootstrap";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsCheck2Square } from "react-icons/bs";

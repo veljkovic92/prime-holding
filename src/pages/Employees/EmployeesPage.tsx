@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { Employee } from "../../types/types";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import classes from "./EmployeesPage.module.scss"
-import Card from "../../components/ui/Card/Card";
 import EmployeeItem from "../../components/EmployeeItem/EmployeeItem";
 
 const EmployeesPage = () => {
