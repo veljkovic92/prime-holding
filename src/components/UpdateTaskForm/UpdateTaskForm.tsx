@@ -8,7 +8,6 @@ import { useNavigate, useParams } from "react-router";
 import { Task } from "../../types/types";
 
 type UpdateTaskFormProps = {
-  onMatchingTaskTitle: (title: string) => void;
   matchingTask: Task | undefined;
 };
 
@@ -99,10 +98,11 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
           {...register("date", { required: false })}
         />
       </Form.Group>
-
-      <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
-        Submit
-      </Button>
+      <div className={classes["form__actions"]}>
+        <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
+          Submit
+        </Button>
+      </div>
     </Form>
   );
 };

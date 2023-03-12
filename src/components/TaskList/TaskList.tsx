@@ -4,7 +4,7 @@ import { Employee, Task } from "../../types/types";
 import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import TaskItem from "../TaskItem/TaskItem";
-import classes from "./TaskList.module.scss"
+import classes from "./TaskList.module.scss";
 
 interface ITaskList {
   taskList: Task[];
@@ -14,12 +14,20 @@ interface ITaskList {
 const TaskList = ({ taskList, onDeleteEmployeeHandler }: ITaskList) => {
   return (
     <div className={classes.taskList}>
-      <h3>All Employee Tasks</h3>
-      <ul>
-        {taskList.map((task) => (
-          <TaskItem task={task} onDeleteEmployeeHandler={onDeleteEmployeeHandler}/>
-        ))}
-      </ul>
+      {taskList.length === 0 && <h3>No Tasks Yet...</h3>}
+      {taskList.length > 0 && (
+        <>
+          <h3 className={classes["taskList__title"]}>Assigned to:</h3>
+          <ul className={classes["taskList__list"]}>
+            {taskList.map((task) => (
+              <TaskItem
+                task={task}
+                onDeleteEmployeeHandler={onDeleteEmployeeHandler}
+              />
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 };

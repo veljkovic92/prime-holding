@@ -23,7 +23,7 @@ const Header = () => {
             : classes["header--link"]
         }
       >
-        Home
+        New Employee
       </NavLink>
       <NavLink
         to="/stats"

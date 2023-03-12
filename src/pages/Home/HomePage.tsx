@@ -1,11 +1,10 @@
 import React from "react";
 import UserForm from "../../components/UserForm/UserForm";
-import classes from "./HomePage.module.scss"
+import classes from "./HomePage.module.scss";
 
 const HomePage = () => {
   return (
     <div className={classes["home-page"]}>
-      <h2>Add New Employee</h2>
       <UserForm />
     </div>
   );

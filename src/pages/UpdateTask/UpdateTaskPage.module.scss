@@ -1,0 +1,15 @@
+.updateTaskPage {
+
+  &__title {
+    margin-bottom: 15px;
+  }
+
+  &__title, &__name {
+    text-align: center;
+    
+  }
+
+  &__name {
+    margin-bottom: 30px;
+  }
+}

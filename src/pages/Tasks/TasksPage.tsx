@@ -7,6 +7,7 @@ import { child, get, getDatabase, ref, remove, set } from "firebase/database";
 import { useParams } from "react-router";
 import app from "../../firebase/firebase";
 import classes from "./TasksPage.module.scss";
+import { Button } from "react-bootstrap";
 
 const TasksPage = () => {
   const params = useParams();
@@ -14,6 +15,7 @@ const TasksPage = () => {
   const dbRef = ref(getDatabase());
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
+  const [newTaskClicked, setNewTaskClicked] = useState(false);
 
   useEffect(() => {
     getData();
@@ -63,6 +65,7 @@ const TasksPage = () => {
     });
 
     getData();
+    setNewTaskClicked(false);
   };
 
   const onDeleteEmployeeHandler = async (id: string) => {
@@ -72,11 +75,18 @@ const TasksPage = () => {
 
   return (
     <div className={classes.tasksPage}>
-      <h2>Tasks</h2>
-      <h5>
-        Employee: <em>{matchingEmployee?.name}</em>
-      </h5>
-      <TaskForm onRegisterFormSubmit={onRegisterFormSubmit} />
+      <h2 className={classes["tasksPage__title"]}>
+        <em>
+          <strong>{matchingEmployee?.name}</strong>{" "}
+        </em>
+        's tasks
+      </h2>
+      <Button onClick={() => setNewTaskClicked((prevValue) => !prevValue)} className={classes["tasksPage__newTaskBtn"]}>
+        New Task
+      </Button>
+      {newTaskClicked && (
+        <TaskForm onRegisterFormSubmit={onRegisterFormSubmit} />
+      )}
       <TaskList
         taskList={taskList}
         onDeleteEmployeeHandler={onDeleteEmployeeHandler}

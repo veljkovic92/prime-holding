@@ -1,21 +1,47 @@
 .taskItem {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 10px;
-  gap: 20px;
+  padding: 20px;
+
+  width: 350px;
+  position: relative;
+
+  p {
+    margin: 0;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  &:hover {
+    z-index: 1;
+    .taskItem__actions {
+      opacity: 1;
+    }
+  }
+
   &__info {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 20px;
+    
+    
   }
 
   &__actions {
-    width: 100%;
+    position: absolute;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    gap: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -18%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background-color: rgb(255, 251, 229);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 6px 1px grey;
   }
 }

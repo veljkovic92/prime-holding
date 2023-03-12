@@ -1,9 +1,11 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Task } from "../../types/types";
 import Card from "../ui/Card/Card";
-import classes from "./TaskItem.module.scss"
+import classes from "./TaskItem.module.scss";
 
 interface ITaskItem {
   task: Task;
@@ -13,19 +15,31 @@ interface ITaskItem {
 const TaskItem = ({ task, onDeleteEmployeeHandler }: ITaskItem) => {
   return (
     <Card key={task.id} className={classes.taskItem}>
-      <div>
-        <p>Title: {task.title}</p>
-        <p>Description: {task.description}</p>
-        <p>{task.date.toLocaleString()}</p>
-        </div>
-        <div className={classes["taskItem__actions"]}>
-        <Button onClick={() => onDeleteEmployeeHandler(task.id)}>Delete</Button>
+      <div className={classes["taskItem__info"]}>
+        <p>
+          <strong>Title: </strong>
+          {task.title}
+        </p>
+        <p>
+          <strong>Description: </strong>
+          {task.description}
+        </p>
+        <p>
+          <strong>Due Date: </strong> {task.date.toLocaleString() || "No limit"}
+        </p>
+      </div>
+      <div className={classes["taskItem__actions"]}>
         <Link to={`${task.id}/form`}>
-          <Button>Update</Button>
+          <Button variant="success">
+            <FiEdit />
+          </Button>
         </Link>
-        <Link to={`${task.id}/tasks`}>
-          <Button>Tasks</Button>
-        </Link>
+        <Button
+          onClick={() => onDeleteEmployeeHandler(task.id)}
+          variant="danger"
+        >
+          <AiOutlineDelete />
+        </Button>
       </div>
     </Card>
   );

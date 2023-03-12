@@ -1,8 +1,9 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import UpdateUserForm from "../../components/UpdateEmployeeForm/UpdateEmployeeForm";
+import UpdateEmployeeForm from "../../components/UpdateEmployeeForm/UpdateEmployeeForm";
 import { Employee } from "../../types/types";
+import classes from "./UpdateEmployeePage.module.scss"
 
 const UpdateUserPage = () => {
   const params = useParams();
@@ -28,9 +29,9 @@ const UpdateUserPage = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Update User Data: {matchingEmployee?.name}</h2>
-      <UpdateUserForm matchingEmployee={matchingEmployee} />
+    <div className={classes.updateEmployee}>
+      <h2 className={classes["updateEmployee__title"]}>Edit {matchingEmployee?.name}'s profile</h2>
+      <UpdateEmployeeForm matchingEmployee={matchingEmployee} />
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Employee } from "../../types/types";
 import Card from "../ui/Card/Card";
 import classes from "./EmployeeItem.module.scss";
+import {FiEdit} from "react-icons/fi";
+import {AiOutlineDelete} from "react-icons/ai"
 
 interface IEmployee {
   employee: Employee;
@@ -36,12 +38,15 @@ const EmployeeItem = ({ employee, onDeleteEmployeeHandler }: IEmployee) => {
         <Link to={`${employee.id}/tasks`}>
           <Button>Tasks</Button>
         </Link>
-        <Link to={`${employee.id}/form`}>
-          <Button>Update</Button>
+        <div className={classes["employeeItem__actions__additional"]}>
+        <Link to={`${employee.id}/form`} className={classes["employeeItem__actions__updateBtn"]} >
+          <Button variant="success"><FiEdit /></Button>
         </Link>
-        <Button onClick={() => onDeleteEmployeeHandler(employee.id)}>
-          Delete
+        <Button onClick={() => onDeleteEmployeeHandler(employee.id)} className={classes["employeeItem__actions__deleteBtn"]} variant="danger">
+          <AiOutlineDelete />
         </Button>
+        </div>
+        
       </div>
     </Card>
   );

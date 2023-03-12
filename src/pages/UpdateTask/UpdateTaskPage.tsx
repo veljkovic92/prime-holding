@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import UpdateTaskForm from "../../components/UpdateTaskForm/UpdateTaskForm";
 import { Employee, Task } from "../../types/types";
+import classes from "./UpdateTaskPage.module.scss";
 
 const UpdateTaskPage = () => {
   const params = useParams();
@@ -10,12 +11,6 @@ const UpdateTaskPage = () => {
   const taskId = params.taskId;
 
   const dbRef = ref(getDatabase());
-
-  const [matchingTaskTitle, setMatchingTaskTitle] = useState("");
-
-  const handleMatchingTaskTitle = (title: string) => {
-    setMatchingTaskTitle(title);
-  };
 
   const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
   const [matchingTask, setMatchingTask] = useState<Task>();
@@ -63,14 +58,14 @@ const UpdateTaskPage = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Update Your Task</h2>
-      <p>Task Title: {matchingTaskTitle}</p>
-      <p>Employee Name: {matchingEmployee?.name}</p>
-      <UpdateTaskForm
-        matchingTask={matchingTask}
-        onMatchingTaskTitle={handleMatchingTaskTitle}
-      />
+    <div className={classes.updateTaskPage}>
+      <h2 className={classes["updateTaskPage__title"]}>Edit Task</h2>
+      <h4 className={classes["updateTaskPage__name"]}>
+        <em>{matchingEmployee?.name}'s 
+        <strong> {matchingTask?.title} </strong>
+         task</em>
+      </h4>
+      <UpdateTaskForm matchingTask={matchingTask} />
     </div>
   );
 };

@@ -125,10 +125,12 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
           {...register("monthlySalary", { required: false })}
         />
       </Form.Group>
-
-      <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
-        Submit
-      </Button>
+      <div className={classes["form__actions"]}>
+        {" "}
+        <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
+          Submit
+        </Button>
+      </div>
     </Form>
   );
 };
