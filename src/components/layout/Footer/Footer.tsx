@@ -7,7 +7,7 @@ const Footer = () => {
       <p>
         <em>
           All trademarks are the property of their respective owners. All rights
-          reserved © 2022 Info Edge Ltd.
+          reserved © 2023 Veljkovic Edge Ltd.
         </em>
       </p>
     </section>
