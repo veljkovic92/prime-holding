@@ -1,46 +1,75 @@
-# Getting Started with Create React App
+PRIME HOLDING
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Introduction
 
-## Available Scripts
+The project is purposely built for the company "Prime Holding" and it's theme is an App which allows the user to manipulate with employees and tasks data.
 
-In the project directory, you can run:
+2. Structure of the App
 
-### `npm start`
+The App contains following pages:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- New Employee,
+- Employees,
+- Tasks,
+- Update Employee,
+- Update Task,
+- Statistics
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The Project’s hierarchy is as follows:
 
-### `npm test`
+- public folder
+- src (source folder) that contains:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. “components” folder with: EmployeeItem, layout, TaskForm, TaskItem, TaskList, ui, UpdateEmployeeForm, UpdateTaskForm, UserForm folders. Each folder contains branching folder contains a .tsx and .module.scss file. Separation of logic and readability achieved by separation of concerns.
+2. “firebase” folder with fireabase initialization logic
+3. “pages” folder with every App page: Employees, Home, Statistics, Tasks, UpdateEmployee, UpdateTask. Each folder contains branching folder contains a .tsx and .module.scss file.
+4. “types” folder containing shared App types
+5. App.tsx
+6. index.css
+7. index.tsx
 
-### `npm run build`
+3) Content of the App as of 13/03/2023:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- “New Employee” page allows the user to create a new employee by adding its full name, email, phone, birth date, salary. First two are mandatory.
+- “Employees” page that renders the list of employees with each containing three buttons. One main “tasks” which routes the user to the “Tasks Page” for more informations and two additional buttons “update” and “delete .
+- “Tasks” page meets the user with header of the current employee’s name. Below it is the “New Task” button that opens the form for new task creation. Lastly, there is the list of tasks where each task can be separately checked as completed, edited and deleted.
+- “Update Employee” page contains employee’s name and form for updating each individual employee information.
+- “Update Task” page contains user’s name and chosen task as well as a form for updating task
+- “Statistics” page contains variety of employees and tasks data such as: total employees count, total tasks count, tasks completed count, busiest employee name and top five employees with completed and not completed tasks data.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Additional Functionalities:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- NavLink using react-router-dom improves the accessibility and adds visual highlight to the current content
+- Verification on select form input fields with different logic based on used scenario and dynamic allowance for submit button
+- Prepopulation of forms with already available data for ease of use
+- Postpupulation of select employee and task item values based on availability of needed data (provides user feedback)
+- URL params routing
+- Dynamic additional buttons offering (to put visual accent on content)
+- Two options for marking task as completed, either on button click (short) or complete task edit (long) – for easier accesss to most used feature of task manipulation
+- New Task button shows/hides the task form (allows for automatic form handling)
+- Rerouting on select buttons (ease of use/faster navigation)
+- Statistics offer more diverse informations (key app data pulled in one place)
+- Each “Top Five Employees” item has “drop-down” style element (for easier user focus and navigation)
+- Header, Body, Footer as part of Layout “container” element (standard, familiar layout with nav links, body of content and footer
 
-### `npm run eject`
+5. Technologies/Libraries/Frameworks/Packages:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- JavaScript,
+- HTML,
+- CSS (SASS),
+- ReactJS,
+- React Bootstrap
+- React Router,
+- React Icons
+- Typescript
+- Firebase
+- React Hook Form
+- React Icons
+- UUID
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. Requirements to run the App:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1) Git Clone or download App,
+2) Open the App in your preferred Code Reader (Project was built in Visual Studio Code),
+3) Run "npm install" in your terminal,
+4) Run "npm start"
