@@ -24,6 +24,7 @@ const TaskList = ({
           <ul className={classes["taskList__list"]}>
             {taskList.map((task) => (
               <TaskItem
+                key={task.id}
                 task={task}
                 onDeleteTaskHandler={onDeleteTaskHandler}
                 onDoneTaskHandler={onDoneTaskHandler}

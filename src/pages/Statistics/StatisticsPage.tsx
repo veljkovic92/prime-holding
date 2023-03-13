@@ -1,5 +1,5 @@
 import { child, get, getDatabase, ref } from "firebase/database";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import { Employee, Task } from "../../types/types";
@@ -7,16 +7,6 @@ import classes from "./StatisticsPage.module.scss";
 
 const StatisticsPage = () => {
   const dbRef = ref(getDatabase());
-
-  const arrowObject = [
-    {
-      0: false,
-      1: false,
-      2: false,
-      3: false,
-      4: false,
-    },
-  ];
 
   const [allTasks, setAllTasks] = useState<Task[]>([]);
 
@@ -34,7 +24,7 @@ const StatisticsPage = () => {
     false,
   ]);
   const [tasksCompleted, setTasksCompleted] = useState(0);
-  const getTasksCompleted = () => {
+  const getTasksCompleted = useCallback(() => {
     let noOfCompletedTasks = 0;
     allTasks.forEach((task) => {
       if (task.completed === true) {
@@ -43,9 +33,9 @@ const StatisticsPage = () => {
 
       return setTasksCompleted(noOfCompletedTasks);
     });
-  };
+  }, [allTasks]);
 
-  const getTaskData = () => {
+  const getTaskData = useCallback(() => {
     get(child(dbRef, `employees`))
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -60,22 +50,9 @@ const StatisticsPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, [dbRef]);
 
-  useEffect(() => {
-    getTaskData();
-  }, []);
-
-  useEffect(() => {
-    getTasksCompleted();
-  }, [allTasks]);
-
-  useEffect(() => {
-    getAllTasks();
-    getTopFiveEmployees();
-  }, [employees]);
-
-  const getAllTasks = () => {
+  const getAllTasks = useCallback(() => {
     const allTasksArray: Task[] = [];
     if (employees) {
       employees.forEach((employee) => {
@@ -83,7 +60,7 @@ const StatisticsPage = () => {
 
         if (allEmployeeTasks) {
           Object.keys(allEmployeeTasks).map((task: any) => {
-            allTasksArray.push(allEmployeeTasks[task]);
+            return allTasksArray.push(allEmployeeTasks[task]);
           });
         }
 
@@ -112,9 +89,9 @@ const StatisticsPage = () => {
     }
 
     setAllTasks(allTasksArray);
-  };
+  }, [employees]);
 
-  const getTopFiveEmployees = () => {
+  const getTopFiveEmployees = useCallback(() => {
     const employeeTasks = employees.map((employee) => {
       let completedTasks = 0;
       if (employee.tasks) {
@@ -132,13 +109,26 @@ const StatisticsPage = () => {
     );
 
     setTopFiveEmployees(sortedEmployees.slice(0, 5));
-  };
+  }, [employees]);
 
   const onArrowClickHandler = (index: number) => {
     const updatedArrowObject = [...arrowClicked];
     updatedArrowObject[index] = !updatedArrowObject[index];
     setArrowClicked(updatedArrowObject);
   };
+
+  useEffect(() => {
+    getTaskData();
+  }, [getTaskData]);
+
+  useEffect(() => {
+    getTasksCompleted();
+  }, [allTasks, getTasksCompleted]);
+
+  useEffect(() => {
+    getAllTasks();
+    getTopFiveEmployees();
+  }, [employees, getAllTasks, getTopFiveEmployees]);
 
   const mapTopFiveEmployees =
     topFiveEmployees &&
@@ -204,7 +194,7 @@ const StatisticsPage = () => {
       </h3>
       <h3>
         <strong>Busiest employee: </strong>
-        {busiestEmployee?.name || "No Employees yet"}
+        {busiestEmployee?.name || "No Employees with tasks yet"}
       </h3>
       <h3>
         <strong>Top Five employees:</strong>

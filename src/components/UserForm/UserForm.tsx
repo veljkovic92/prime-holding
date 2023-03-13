@@ -31,8 +31,6 @@ const UserForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
-
     formState: { errors, isDirty, isValid },
   } = useForm<Employee>({ mode: "all" });
   const onSubmit: SubmitHandler<Employee> = (data) =>
@@ -112,13 +110,8 @@ const UserForm = () => {
           {...register("monthlySalary", { required: false })}
         />
       </Form.Group>
-      <div  className={classes["form__actions"]}>
-        <Button
-          
-          variant="primary"
-          type="submit"
-          disabled={!isDirty || !isValid}
-        >
+      <div className={classes["form__actions"]}>
+        <Button variant="primary" type="submit" disabled={!isDirty || !isValid}>
           Submit
         </Button>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import classes from "./UpdateTaskForm.module.scss";
@@ -39,10 +39,6 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
     } catch (err) {}
   };
 
-  useEffect(() => {
-    reset(matchingTask);
-  }, [matchingTask]);
-
   const {
     register,
     handleSubmit,
@@ -55,6 +51,11 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
       completed: matchingTask?.completed || false,
     },
   });
+
+  useEffect(() => {
+    reset(matchingTask);
+  }, [matchingTask, reset]);
+
   const onSubmit: SubmitHandler<Task> = (data) => onRegisterFormSubmit(data);
 
   return (

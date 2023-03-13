@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import classes from "./UpdateEmployeeForm.module.scss";
@@ -35,10 +35,6 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
     } catch (err) {}
   };
 
-  useEffect(() => {
-    reset(matchingEmployee);
-  }, [matchingEmployee]);
-
   const {
     register,
     handleSubmit,
@@ -47,6 +43,10 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
   } = useForm<Employee>({
     mode: "all",
   });
+
+  useEffect(() => {
+    reset(matchingEmployee);
+  }, [matchingEmployee, reset]);
 
   const onSubmit: SubmitHandler<Employee> = (data) =>
     onRegisterFormSubmit(data);

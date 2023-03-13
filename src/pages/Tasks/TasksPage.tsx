@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TaskForm from "../../components/TaskForm/TaskForm";
 import TaskList from "../../components/TaskList/TaskList";
 import { Employee, Task } from "../../types/types";
@@ -16,13 +16,10 @@ const TasksPage = () => {
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
   const [newTaskClicked, setNewTaskClicked] = useState(false);
+  const employeeId = params.employeeId;
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = () => {
-    get(child(dbRef, `employees/${params.employeeId}/tasks`))
+  const getData = useCallback(() => {
+    get(child(dbRef, `employees/${employeeId}/tasks`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           const tasks = snapshot.val();
@@ -37,7 +34,7 @@ const TasksPage = () => {
         console.error(error);
       });
 
-    get(child(dbRef, `employees/${params.employeeId}`))
+    get(child(dbRef, `employees/${employeeId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           const employee = snapshot.val();
@@ -49,7 +46,11 @@ const TasksPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, [dbRef, employeeId]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
   const onRegisterFormSubmit = async (data: Task) => {
     const { title, description, date, completed } = data;

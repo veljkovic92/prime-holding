@@ -25,7 +25,7 @@ const UpdateUserPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [dbRef, employeeId]);
 
   return (
     <div className={classes.updateEmployee}>

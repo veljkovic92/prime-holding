@@ -1,5 +1,5 @@
 import { child, get, getDatabase, ref } from "firebase/database";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import UpdateTaskForm from "../../components/UpdateTaskForm/UpdateTaskForm";
 import { Employee, Task } from "../../types/types";
@@ -15,7 +15,7 @@ const UpdateTaskPage = () => {
   const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
   const [matchingTask, setMatchingTask] = useState<Task>();
 
-  const getEmployeeData = () => {
+  const getEmployeeData = useCallback(() => {
     get(child(dbRef, `employees/${employeeId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -28,32 +28,30 @@ const UpdateTaskPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, [dbRef, employeeId]);
 
-  const getTaskData = () => {
-    get(child(dbRef, `employees/${employeeId}/` + "tasks/" + taskId))
+  const getTaskData = useCallback(() => {
+    get(child(dbRef, `employees/${employeeId}/tasks/${taskId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           let matchingTask = snapshot.val();
 
           setMatchingTask(matchingTask);
-
-          // onMatchingTaskTitle(matchingTask.title);
         } else {
         }
       })
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, [dbRef, employeeId, taskId]);
 
   useEffect(() => {
     getEmployeeData();
-  }, []);
+  }, [getEmployeeData]);
 
   useEffect(() => {
     getTaskData();
-  }, []);
+  }, [getTaskData]);
 
   return (
     <div className={classes.updateTaskPage}>

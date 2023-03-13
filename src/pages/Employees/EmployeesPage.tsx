@@ -25,7 +25,7 @@ const EmployeesPage = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [dbRef]);
 
   const onDeleteEmployeeHandler = (id: string) => {
     remove(ref(db, "employees/" + id))
@@ -46,6 +46,7 @@ const EmployeesPage = () => {
       <ul className={classes["employees__list"]}>
         {employees.map((employee) => (
           <EmployeeItem
+            key={employee.id}
             employee={employee}
             onDeleteEmployeeHandler={onDeleteEmployeeHandler}
           />
