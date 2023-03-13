@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import classes from "./UpdateTaskForm.module.scss";
 import { getDatabase, ref, update } from "firebase/database";
 import app from "../../firebase/firebase";
 import { useNavigate, useParams } from "react-router";
-import { Task } from "../../types/types";
+import { NotificationType, Task } from "../../types/types";
+import Notification from "../Notification/Notification";
 
 type UpdateTaskFormProps = {
   matchingTask: Task | undefined;
@@ -18,6 +19,22 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
   const navigate = useNavigate();
   const db = getDatabase(app);
 
+  const emptyNotification: NotificationType = {
+    status: "",
+    title: "",
+    message: "",
+  };
+
+  const [notification, setNotification] =
+    useState<NotificationType>(emptyNotification);
+
+  useEffect(() => {
+    if (notification.status !== "") {
+      setTimeout(() => {
+        setNotification(emptyNotification);
+      }, 2000);
+    }
+  }, [notification]);
   const onRegisterFormSubmit = async (data: Task) => {
     try {
       const updateData: Task = {
@@ -35,8 +52,21 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
         updates
       );
 
-      navigate("/employees/" + employeeId + "/tasks/");
-    } catch (err) {}
+      setNotification({
+        status: "success",
+        title: "Task edit complete!",
+        message: "Successfully changed task's information",
+      });
+      setTimeout(() => {
+        navigate("/employees/" + employeeId + "/tasks/");
+      }, 2000);
+    } catch (err) {
+      setNotification({
+        status: "failure",
+        title: "Task edit incomplete!",
+        message: "Failed changing task's information",
+      });
+    }
   };
 
   const {
@@ -60,11 +90,12 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-      <Form.Group className="mb-3" controlId="formBasicName">
+      {notification.status && <Notification notification={notification} />}
+      <Form.Group className="mb-3" controlId="formBasicTitle">
         <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Full name"
+          placeholder="Task title"
           {...register("title", { required: false, minLength: 3 })}
         />
         {errors.title && errors.title.type === "minLength" && (
@@ -73,10 +104,10 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
           </p>
         )}
         {errors.title && errors.title.type === "required" && (
-          <p className={classes["form--error"]}>The name is required</p>
+          <p className={classes["form--error"]}>The title is required</p>
         )}
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="mb-3" controlId="formBasicDescription">
         <Form.Label>Description</Form.Label>
         <Form.Control
           type="text"
@@ -87,16 +118,11 @@ const UpdateTaskForm = ({ matchingTask }: UpdateTaskFormProps) => {
         />
 
         {errors.description && errors.description.type === "required" && (
-          <p className={classes["form--error"]}>description is required</p>
-        )}
-        {errors.description && errors.description.type === "pattern" && (
-          <p className={classes["form--error"]}>
-            Please enter a valid email address
-          </p>
+          <p className={classes["form--error"]}>Description is required</p>
         )}
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPhone">
+      <Form.Group className="mb-3" controlId="formBasicDate">
         <Form.Label>Due Date</Form.Label>
         <Form.Control
           type="date"

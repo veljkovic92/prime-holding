@@ -43,6 +43,7 @@ The Project’s hierarchy is as follows:
 - Verification on select form input fields with different logic based on used scenario and dynamic allowance for submit button
 - Prepopulation of forms with already available data for ease of use
 - Postpupulation of select employee and task item values based on availability of needed data (provides user feedback)
+- Notifications for user feedback on employee/task changed settings
 - URL params routing
 - Dynamic additional buttons offering (to put visual accent on content)
 - Two options for marking task as completed, either on button click (short) or complete task edit (long) – for easier accesss to most used feature of task manipulation

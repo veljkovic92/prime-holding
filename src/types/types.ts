@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type Employee = {
   id: string;
   name: string;
@@ -22,3 +24,9 @@ export type Task = {
 export type LayoutProps = {
   children?: React.ReactNode;
 };
+
+export type NotificationType = {
+  status: string;
+  title: string;
+  message: string;
+}

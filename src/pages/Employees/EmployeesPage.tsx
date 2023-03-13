@@ -1,14 +1,32 @@
 import { useEffect, useState } from "react";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
-import { Employee } from "../../types/types";
+import { Employee, NotificationType } from "../../types/types";
 import classes from "./EmployeesPage.module.scss";
 import EmployeeItem from "../../components/EmployeeItem/EmployeeItem";
+import Notification from "../../components/Notification/Notification";
+
+const emptyNotification: NotificationType = {
+  status: "",
+  title: "",
+  message: "",
+};
 
 const EmployeesPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [notification, setNotification] =
+    useState<NotificationType>(emptyNotification);
+  
 
   const dbRef = ref(getDatabase());
   const db = getDatabase();
+
+  useEffect(() => {
+    if (notification.status !== "") {
+      setTimeout(() => {
+        setNotification(emptyNotification);
+      }, 2000);
+    }
+  }, [notification]);
 
   useEffect(() => {
     get(child(dbRef, `employees`))
@@ -19,7 +37,6 @@ const EmployeesPage = () => {
             (item) => employees[item]
           );
           setEmployees(employeesMap);
-        } else {
         }
       })
       .catch((error) => {
@@ -30,19 +47,22 @@ const EmployeesPage = () => {
   const onDeleteEmployeeHandler = (id: string) => {
     remove(ref(db, "employees/" + id))
       .then(() => {
-        // Data saved successfully!
         const updatedEmployees = employees.filter(
           (employee) => employee.id !== id
         );
         setEmployees(updatedEmployees);
+        setNotification({
+          status: "success",
+          title: "Delete complete!",
+          message: "Successfully removed an employee",
+        });
       })
-      .catch((error) => {
-        // The write failed...
-      });
+      .catch((error) => {});
   };
 
   return (
     <div className={classes["employees"]}>
+      {notification.status && <Notification notification={notification} />}
       <ul className={classes["employees__list"]}>
         {employees.map((employee) => (
           <EmployeeItem

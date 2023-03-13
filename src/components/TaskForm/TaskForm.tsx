@@ -31,7 +31,7 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
           </p>
         )}
         {errors.title && errors.title.type === "required" && (
-          <p className={classes["form--error"]}>The name is required</p>
+          <p className={classes["form--error"]}>The title is required</p>
         )}
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -45,15 +45,9 @@ const TaskForm = ({ onRegisterFormSubmit }: ITaskForm) => {
         />
 
         {errors.description && errors.description.type === "required" && (
-          <p className={classes["form--error"]}>Email is required</p>
-        )}
-        {errors.description && errors.description.type === "pattern" && (
-          <p className={classes["form--error"]}>
-            Please enter a valid email address
-          </p>
+          <p className={classes["form--error"]}>Description is required</p>
         )}
       </Form.Group>
-
       <Form.Group className="mb-3" controlId="formBasicPhone">
         <Form.Label>Due Date</Form.Label>
         <Form.Control

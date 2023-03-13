@@ -1,4 +1,4 @@
-import UserForm from "../../components/UserForm/UserForm";
+import UserForm from "../../components/EmployeeForm/EmployeeForm";
 import classes from "./HomePage.module.scss";
 
 const HomePage = () => {

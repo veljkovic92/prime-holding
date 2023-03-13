@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import TaskForm from "../../components/TaskForm/TaskForm";
 import TaskList from "../../components/TaskList/TaskList";
-import { Employee, Task } from "../../types/types";
+import { Employee, NotificationType, Task } from "../../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { child, get, getDatabase, ref, remove, set } from "firebase/database";
 import { useParams } from "react-router";
 import app from "../../firebase/firebase";
 import classes from "./TasksPage.module.scss";
 import { Button } from "react-bootstrap";
+import Notification from "../../components/Notification/Notification";
 
 const TasksPage = () => {
   const params = useParams();
@@ -17,6 +18,15 @@ const TasksPage = () => {
   const [matchingEmployee, setMatchingEmployee] = useState<Employee>();
   const [newTaskClicked, setNewTaskClicked] = useState(false);
   const employeeId = params.employeeId;
+
+  const emptyNotification: NotificationType = {
+    status: "",
+    title: "",
+    message: "",
+  };
+
+  const [notification, setNotification] =
+    useState<NotificationType>(emptyNotification);
 
   const getData = useCallback(() => {
     get(child(dbRef, `employees/${employeeId}/tasks`))
@@ -52,51 +62,110 @@ const TasksPage = () => {
     getData();
   }, [getData]);
 
+  useEffect(() => {
+    if (notification.status !== "") {
+      setTimeout(() => {
+        setNotification(emptyNotification);
+      }, 2000);
+    }
+  }, [notification]);
+
   const onRegisterFormSubmit = async (data: Task) => {
     const { title, description, date, completed } = data;
     const id = uuidv4();
-
-    await set(ref(db, "employees/" + params.employeeId + "/tasks/" + id), {
-      id,
-      title,
-      description,
-      date,
-      completed,
-    });
-
-    getData();
-    setNewTaskClicked(false);
+    try {
+      await set(ref(db, "employees/" + params.employeeId + "/tasks/" + id), {
+        id,
+        title,
+        description,
+        date,
+        completed,
+      });
+      setNotification({
+        status: "success",
+        title: "Task save complete!",
+        message: "Successfully stored task to the list",
+      });
+      getData();
+      setNewTaskClicked(false);
+    } catch (err) {
+      setNotification({
+        status: "failure",
+        title: "Task save incomplete!",
+        message: "Failed storing task to the list",
+      });
+    }
   };
 
   const onDeleteTaskHandler = async (id: string) => {
-    await remove(ref(db, "employees/" + params.employeeId + "/tasks/" + id));
-    getData();
+    try {
+      await remove(ref(db, "employees/" + params.employeeId + "/tasks/" + id));
+      setNotification({
+        status: "success",
+        title: "Task delete complete!",
+        message: "Successfully removed task from the list",
+      });
+      getData();
+    } catch (err) {
+      setNotification({
+        status: "failure",
+        title: "Task delete incomplete!",
+        message: "Failed removing task from the list",
+      });
+    }
   };
 
   const onDoneTaskHandler = async (id: string) => {
-    await set(
-      ref(
-        db,
-        "employees/" + params.employeeId + "/tasks/" + id + "/completed/"
-      ),
-      true
-    );
-    getData();
+    try {
+      await set(
+        ref(
+          db,
+          "employees/" + params.employeeId + "/tasks/" + id + "/completed/"
+        ),
+        true
+      );
+      setNotification({
+        status: "success",
+        title: "Task edit complete!",
+        message: "Successfully marked task as complete",
+      });
+      getData();
+    } catch (err) {
+      setNotification({
+        status: "failure",
+        title: "Task edit incomplete!",
+        message: "Failed marking task as complete",
+      });
+    }
   };
 
   const onNotDoneTaskHandler = async (id: string) => {
-    await set(
-      ref(
-        db,
-        "employees/" + params.employeeId + "/tasks/" + id + "/completed/"
-      ),
-      false
-    );
-    getData();
+    try {
+      await set(
+        ref(
+          db,
+          "employees/" + params.employeeId + "/tasks/" + id + "/completed/"
+        ),
+        false
+      );
+      setNotification({
+        status: "success",
+        title: "Task edit complete!",
+        message: "Successfully marked task as incomplete",
+      });
+      getData();
+    } catch (err) {
+      setNotification({
+        status: "failure",
+        title: "Task edit incomplete!",
+        message: "Failed marking task as incomplete",
+      });
+    }
   };
 
   return (
     <div className={classes.tasksPage}>
+      {notification.status && <Notification notification={notification} />}
       <h2 className={classes["tasksPage__title"]}>
         <em>
           <strong>{matchingEmployee?.name}</strong>{" "}

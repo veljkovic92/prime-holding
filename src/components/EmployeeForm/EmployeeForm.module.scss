@@ -1,0 +1,19 @@
+.form {
+  width: 50%;
+  margin: auto;
+  &__actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input:placeholder-shown {
+    font-style: italic;
+  }
+
+  &--error {
+    font-style: italic;
+    color: red;
+    font-size: 0.75rem;
+  }
+}

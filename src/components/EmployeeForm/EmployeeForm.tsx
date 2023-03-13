@@ -1,21 +1,17 @@
-import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
-import classes from "./UpdateEmployeeForm.module.scss";
-import { getDatabase, ref, update } from "firebase/database";
+import classes from "./EmployeeForm.module.scss";
+import { getDatabase, ref, set } from "firebase/database";
 import app from "../../firebase/firebase";
-import { useNavigate, useParams } from "react-router";
-import { Employee, NotificationType, UpdateEmployee } from "../../types/types";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router";
+import { Employee, NotificationType } from "../../types/types";
+import { useEffect, useState } from "react";
 import Notification from "../Notification/Notification";
 
-interface IUpdateUserForm {
-  matchingEmployee: Employee | undefined;
-}
-
-const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
-  const params = useParams();
-  const employeeId = params.employeeId;
+const EmployeeForm = () => {
   const navigate = useNavigate();
+
   const db = getDatabase(app);
 
   const emptyNotification: NotificationType = {
@@ -36,23 +32,22 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
   }, [notification]);
 
   const onRegisterFormSubmit = async (data: Employee) => {
+    const { name, email, phoneNumber, dateOfBirth, monthlySalary } = data;
+    const id = uuidv4();
+
     try {
-      const updateData: UpdateEmployee = {
-        name: data.name || matchingEmployee?.name || "",
-        email: data.email || matchingEmployee?.email || "",
-        phoneNumber: data.phoneNumber || matchingEmployee?.phoneNumber,
-        dateOfBirth: data.dateOfBirth || matchingEmployee?.dateOfBirth,
-        monthlySalary: data.monthlySalary || matchingEmployee?.monthlySalary,
-      };
-
-      const updates: UpdateEmployee = updateData;
-
-      await update(ref(db, "employees/" + employeeId), updates);
-
+      set(ref(db, "employees/" + id), {
+        id,
+        name,
+        email,
+        phoneNumber,
+        dateOfBirth,
+        monthlySalary,
+      });
       setNotification({
         status: "success",
-        title: "Employee edit complete!",
-        message: "Successfully changed employee's information",
+        title: "Employee created!",
+        message: "Successfully stored an employee to the list",
       });
       setTimeout(() => {
         navigate("/employees");
@@ -60,8 +55,8 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
     } catch (err) {
       setNotification({
         status: "failure",
-        title: "Employee edit incomplete!",
-        message: "Failed changing employee's information",
+        title: "Employee not created!",
+        message: "Failed storing an employee to the list",
       });
     }
   };
@@ -69,29 +64,20 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isDirty, isValid },
-  } = useForm<Employee>({
-    mode: "all",
-  });
-
-  useEffect(() => {
-    reset(matchingEmployee);
-  }, [matchingEmployee, reset]);
-
+  } = useForm<Employee>({ mode: "all" });
   const onSubmit: SubmitHandler<Employee> = (data) =>
     onRegisterFormSubmit(data);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       {notification.status && <Notification notification={notification} />}
-
       <Form.Group className="mb-3" controlId="formBasicName">
-        <Form.Label>Your Full Name</Form.Label>
+        <Form.Label>Full Name</Form.Label>
         <Form.Control
           type="text"
           placeholder="Full name"
-          {...register("name", { required: false, minLength: 3 })}
+          {...register("name", { required: true, minLength: 3 })}
         />
         {errors.name && errors.name.type === "minLength" && (
           <p className={classes["form--error"]}>
@@ -108,7 +94,7 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
           type="email"
           placeholder="Enter email"
           {...register("email", {
-            required: false,
+            required: true,
             pattern:
               /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
           })}
@@ -167,4 +153,4 @@ const UpdateUserForm = ({ matchingEmployee }: IUpdateUserForm) => {
   );
 };
 
-export default UpdateUserForm;
+export default EmployeeForm;
